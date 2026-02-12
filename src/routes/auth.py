@@ -1,13 +1,11 @@
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, EmailStr
-
-from src.repository.user_repo import UserRepo
+from src.repositories.user_repo import UserRepository
 from src.utils.security import make_token, verify_pw
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
-# دوستانت اینو با DI واقعی وصل کنن
-def get_user_repo() -> UserRepo:
+def get_user_repo() -> UserRepository:
     raise NotImplementedError
 
 class LoginIn(BaseModel):
@@ -15,7 +13,7 @@ class LoginIn(BaseModel):
     password: str
 
 @router.post("/login")
-def login(data: LoginIn, repo: UserRepo = Depends(get_user_repo)):
+def login(data: LoginIn, repo: UserRepository = Depends(get_user_repo)):
     u = repo.get_by_email(str(data.email))
     if not u or not u["is_active"]:
         raise HTTPException(401, "Invalid credentials")

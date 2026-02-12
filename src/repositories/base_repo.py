@@ -1,10 +1,13 @@
+# src/repositories/base_repository.py
 from sqlalchemy.orm import Session
 from typing import Optional, List, TypeVar, Generic, Type
 from sqlalchemy.exc import IntegrityError
 
 ModelType = TypeVar("ModelType")
 
-class BaseRepository(Generic[ModelType]): 
+class BaseRepository(Generic[ModelType]):
+    """Base repository with common CRUD operations."""
+    
     def __init__(self, db: Session, model: Type[ModelType]):
         self.db = db
         self.model = model

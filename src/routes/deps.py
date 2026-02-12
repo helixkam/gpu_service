@@ -2,9 +2,9 @@ from typing import Optional
 from fastapi import Depends, HTTPException
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
-from src.repository.user_repo import UserRepo
+from src.repositories.user_repo import UserRepo
 from src.utils.security import read_token
-from src.routes.auth import get_user_repo  # همون DI
+from src.routes.auth import get_user_repo  
 
 bearer = HTTPBearer(auto_error=False)
 
