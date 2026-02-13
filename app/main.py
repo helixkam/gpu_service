@@ -1,7 +1,9 @@
 from fastapi import FastAPI
+from app.api.v1.router import api_router
+from app.api.dependencies import init_database
 
-app = FastAPI()
+gpuaas_app = FastAPI()
 
-@app.get("/")
-def root():
-    return {"message": "GPU-as-a-Service Started!"}
+init_database()
+
+gpuaas_app.include_router(api_router)
