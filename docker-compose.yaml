@@ -1,0 +1,34 @@
+version: "3.9"
+
+services:
+    db:
+        image: postgres:18.2
+        restart: always
+        environment:
+            POSTGRES_DB: gpuaas
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: postgres
+        ports:
+            - "5432:5432"
+        volumes:
+            - pgdata:/var/lib/postgresql/data
+        networks:
+            - backend
+    web:
+        build:
+            context: .
+        command: uvicorn app.main:gpuaas_app --reload
+        container_name: GPUaaS_Web
+        restart: unless-stopped
+        ports:
+            - "8000:8000"
+        depends_on:
+            - db
+        networks:
+            - backend
+
+volumes:
+    pgdata:
+networks:
+    backend:
+        driver: bridge
